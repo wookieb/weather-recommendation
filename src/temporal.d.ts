@@ -1,11 +1,10 @@
 declare namespace Temporal {
-  interface PlainDate {
+  class PlainDate {
+    static from(value: string): PlainDate;
     toString(): string;
   }
 }
 
 declare const Temporal: {
-  readonly PlainDate: {
-    from(isoDate: string): Temporal.PlainDate;
-  };
+  PlainDate: typeof Temporal.PlainDate;
 };
