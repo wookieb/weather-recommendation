@@ -127,13 +127,11 @@ function windAdjustment(day: ForecastDay): number {
 }
 
 function weatherCodeAdjustment(day: ForecastDay): number {
-  const weatherCode = day.weatherCode ?? 0;
-
-  if (weatherCode === 0 || weatherCode === 1) {
+  if (isClearWeatherCode(day.weatherCode)) {
     return -5;
   }
 
-  if ([2, 3, 45, 48].includes(weatherCode)) {
+  if (isIndoorFriendlyWeatherCode(day.weatherCode)) {
     return 5;
   }
 
@@ -198,7 +196,7 @@ function addHardCaps(day: ForecastDay, caps: number[]): void {
     caps.push(45);
   }
 
-  if ([57, 65, 67, 75, 82, 86, 95, 96, 99].includes(day.weatherCode ?? 0)) {
+  if (isSevereWeatherCode(day.weatherCode)) {
     caps.push(50);
   }
 
@@ -209,3 +207,70 @@ function addHardCaps(day: ForecastDay, caps: number[]): void {
     caps.push(65);
   }
 }
+
+function isClearWeatherCode(weatherCode: number | null): boolean {
+  return isIndoorSightseeingWeatherCode(weatherCode, CLEAR_WEATHER_CODES);
+}
+
+function isIndoorFriendlyWeatherCode(weatherCode: number | null): boolean {
+  return isIndoorSightseeingWeatherCode(
+    weatherCode,
+    INDOOR_FRIENDLY_WEATHER_CODES,
+  );
+}
+
+function isSevereWeatherCode(weatherCode: number | null): boolean {
+  return isIndoorSightseeingWeatherCode(weatherCode, SEVERE_WEATHER_CODES);
+}
+
+function isIndoorSightseeingWeatherCode(
+  weatherCode: number | null,
+  codes: readonly IndoorSightseeingWeatherCode[],
+): boolean {
+  return (
+    weatherCode !== null &&
+    codes.includes(weatherCode as IndoorSightseeingWeatherCode)
+  );
+}
+
+enum IndoorSightseeingWeatherCode {
+  ClearSky = 0,
+  MainlyClear = 1,
+  PartlyCloudy = 2,
+  Overcast = 3,
+  Fog = 45,
+  DepositingRimeFog = 48,
+  FreezingDrizzleDense = 57,
+  RainHeavy = 65,
+  FreezingRainHeavy = 67,
+  SnowfallHeavy = 75,
+  RainShowersViolent = 82,
+  SnowShowersHeavy = 86,
+  Thunderstorm = 95,
+  ThunderstormWithSlightHail = 96,
+  ThunderstormWithHeavyHail = 99,
+}
+
+const CLEAR_WEATHER_CODES = [
+  IndoorSightseeingWeatherCode.ClearSky,
+  IndoorSightseeingWeatherCode.MainlyClear,
+] as const;
+
+const INDOOR_FRIENDLY_WEATHER_CODES = [
+  IndoorSightseeingWeatherCode.PartlyCloudy,
+  IndoorSightseeingWeatherCode.Overcast,
+  IndoorSightseeingWeatherCode.Fog,
+  IndoorSightseeingWeatherCode.DepositingRimeFog,
+] as const;
+
+const SEVERE_WEATHER_CODES = [
+  IndoorSightseeingWeatherCode.FreezingDrizzleDense,
+  IndoorSightseeingWeatherCode.RainHeavy,
+  IndoorSightseeingWeatherCode.FreezingRainHeavy,
+  IndoorSightseeingWeatherCode.SnowfallHeavy,
+  IndoorSightseeingWeatherCode.RainShowersViolent,
+  IndoorSightseeingWeatherCode.SnowShowersHeavy,
+  IndoorSightseeingWeatherCode.Thunderstorm,
+  IndoorSightseeingWeatherCode.ThunderstormWithSlightHail,
+  IndoorSightseeingWeatherCode.ThunderstormWithHeavyHail,
+] as const;
