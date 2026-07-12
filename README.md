@@ -5,3 +5,4 @@ Backend service that ranks upcoming weather for activities at supported Location
 ## Recommendation Docs
 
 - [Outdoor Sightseeing](docs/recommendation/outdoor-sightseeing.md)
+- [Surfing](docs/recommendation/surfing.md)
