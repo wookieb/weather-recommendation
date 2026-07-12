@@ -1,10 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "instructions": [
-    "ai-conventions/project/*.md",
-    "ai-conventions/general/*.md",
-    "ai-conventions/*.md"
-  ],
+  "instructions": ["ai-conventions/general/*.md"],
   "skills": {
     "paths": [".agents/project-skills"]
   },
