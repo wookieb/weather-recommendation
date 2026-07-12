@@ -32,8 +32,8 @@ score. GraphQL recommendation composition can decide later how to present, order
   precipitation probability percentage, max wind speed in km/h, and max wind gust in km/h.
 - Optional inputs are snowfall sum in centimeters and sunshine duration in hours. Missing optional inputs are neutral.
 - Missing required inputs produce Recommendation Score Unavailable for that Forecast Day, not a score of 0.
-- A Recommendation Total Score sums returned day scores. A Forecast Day with Recommendation Score Unavailable contributes
-  0 to the total.
+- Recommendation Average Score is computed by aggregation, not by this scorer. A Forecast Day with Recommendation Score
+  Unavailable is excluded from that average.
 - Base score starts at 50. Weather adjustments are added, score is clamped to 0-100, then the lowest applicable hard cap is
   applied.
 - A score of 100 is achievable when multiple indoor-refuge signals are favorable and no hard cap applies.

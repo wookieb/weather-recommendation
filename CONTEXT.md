@@ -96,6 +96,14 @@ _Avoid_: Location Not Found, seven bad ski days, zero score
 A ranked assessment of Forecast Days for one activity at one Location. It ranks the Forecast Days present in the Forecast and does not invent missing Forecast Days.
 _Avoid_: itinerary, trip plan, weather lookup
 
+**Combined Activity Recommendation**:
+A collection of Activity Recommendations for multiple activities at one Location, produced by composing the activity-specific scoring contracts rather than adding new activity scoring rules.
+_Avoid_: activity scorer, final query, itinerary
+
+**Aggregated Score**:
+The scoring-layer result that carries one Recommendation Average Score per activity plus per-day Recommendation Scores by Forecast Day and activity. It preserves score unavailability instead of converting it to zero.
+_Avoid_: GraphQL response, ranked recommendation
+
 **Outdoor Sightseeing**:
 A weather-scored activity for walking-heavy city or town visits on a Forecast Day. It considers comfort, dryness, wind safety, snow absence, and daylight or sunshine, but excludes attractions, crowds, cost, transport, and user preferences.
 _Avoid_: tourism, city break, attractions ranking
@@ -112,6 +120,10 @@ _Avoid_: rating, relative score, percentage chance, global weather score
 The ordering position of a Forecast Day within an activity recommendation result, sorted by descending Recommendation Score with earlier Forecast Days first when scores tie.
 _Avoid_: index, sort order
 
+**Unranked Recommendation Day**:
+A Forecast Day present in an Activity Recommendation whose Recommendation Score is unavailable. It remains part of the recommendation result but has no Recommendation Rank.
+_Avoid_: omitted day, zero-score day
+
 **Recommendation Reason**:
 A short explanation of the main weather factors that influenced a Recommendation Score.
 _Avoid_: debug trace, scoring breakdown
@@ -124,6 +136,6 @@ _Avoid_: empty recommendation, Location Not Found
 An activity recommendation for visiting indoor attractions, where unpleasant outdoor weather can make the activity more suitable but severe travel-disrupting weather makes it less suitable.
 _Avoid_: weather-resilient sightseeing, mild-weather sightseeing
 
-**Recommendation Total Score**:
-The sum of Recommendation Scores across the returned Forecast Days for one activity and Location. A Forecast Day with no Recommendation Score contributes 0 to this total.
-_Avoid_: average score, overall rank
+**Recommendation Average Score**:
+The rounded arithmetic mean of produced Recommendation Scores across returned Forecast Days for one activity and Location. A Forecast Day with Recommendation Score Unavailable is excluded from the mean; if no Forecast Day has a produced Recommendation Score, the average score is unavailable. Half values round up to the nearest integer.
+_Avoid_: total score, sum score, overall rank
