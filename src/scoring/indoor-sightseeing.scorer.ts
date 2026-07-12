@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { HashMap } from '@rimbu/hashed';
 import { type Maybe, just, none } from '@sweet-monads/maybe';
 import { ForecastHelper } from '../forecast/forecast.helper';
 import { type ForecastDay } from '../forecast/forecast.types';
 import { type Location } from '../location/location.types';
+import { PlainDateHashMapContext } from './plain-date-hash-map-context';
 import { type RecommendationScore, type Scorer } from './scorer';
 
 @Injectable()
@@ -14,13 +14,16 @@ export class IndoorSightseeingScorer implements Scorer<'indoorSightseeing'> {
 
   async score(
     location: Location,
-  ): Promise<HashMap<Temporal.PlainDate, Maybe<RecommendationScore>>> {
+  ): Promise<Awaited<ReturnType<Scorer<'indoorSightseeing'>['score']>>> {
     const forecast = await this.forecastHelper.get(location);
     if (forecast.isNone()) {
-      return HashMap.empty<Temporal.PlainDate, Maybe<RecommendationScore>>();
+      return PlainDateHashMapContext.empty<
+        Temporal.PlainDate,
+        Maybe<RecommendationScore>
+      >();
     }
 
-    let result = HashMap.empty<
+    let result = PlainDateHashMapContext.empty<
       Temporal.PlainDate,
       Maybe<RecommendationScore>
     >();
