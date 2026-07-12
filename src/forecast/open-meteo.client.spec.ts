@@ -1,5 +1,6 @@
 import { Client, type Dispatcher } from 'undici';
 import sinon from 'sinon';
+import { describe, expect, it } from 'vitest';
 import { type Location } from '../location/location.types';
 import { OpenMeteoClient } from './open-meteo.client';
 

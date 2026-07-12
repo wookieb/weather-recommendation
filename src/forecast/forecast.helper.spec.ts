@@ -1,5 +1,6 @@
 import { CacheableMemory } from 'cacheable';
 import sinon from 'sinon';
+import { describe, expect, it } from 'vitest';
 import { type Location } from '../location/location.types';
 import { FORECAST_CACHE_TTL, ForecastHelper } from './forecast.helper';
 import { type Forecast, type ForecastDay } from './forecast.types';

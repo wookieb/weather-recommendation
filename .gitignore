@@ -1,6 +1,7 @@
 node_modules
 coverage
 compiled
+dist
 *.log
 junit.xml
 .idea
