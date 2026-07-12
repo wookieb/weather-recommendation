@@ -227,10 +227,7 @@ function isIndoorSightseeingWeatherCode(
   weatherCode: number | null,
   codes: readonly IndoorSightseeingWeatherCode[],
 ): boolean {
-  return (
-    weatherCode !== null &&
-    codes.includes(weatherCode as IndoorSightseeingWeatherCode)
-  );
+  return weatherCode !== null && codes.includes(weatherCode);
 }
 
 enum IndoorSightseeingWeatherCode {
