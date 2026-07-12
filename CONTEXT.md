@@ -80,6 +80,18 @@ _Avoid_: surf rank, surf reason, surf recommendation row
 The outcome when a Surfing Recommendation cannot be produced for a known Location because Forecast or Surf Conditions are unavailable as a whole. It is different from a day with poor surfing conditions or a produced recommendation with no scored days.
 _Avoid_: Location Not Found, seven bad surf days, empty ranked result
 
+**Skiing Recommendation**:
+A scored assessment of upcoming days for recreational piste or resort skiing at one supported Location, using Forecast weather signals only. It excludes resort open status, lift status, grooming, avalanche risk, snow base depth, off-piste quality, travel access, skill level, and user preferences.
+_Avoid_: resort operations ranking, backcountry skiing ranking, snow day ranking
+
+**Skiing Day Score**:
+A Recommendation Score for skiing on one Forecast Day, based on snow, temperature, wind, precipitation, and weather condition signals. If those core signals are missing, the score is unavailable; sunshine is a comfort signal rather than a core signal.
+_Avoid_: ski rank, resort score, snow score
+
+**Skiing Unavailable**:
+The outcome when a Skiing Recommendation cannot be produced for a known Location because no usable Forecast Day can produce a Skiing Day Score. It is different from a set of days with poor skiing conditions.
+_Avoid_: Location Not Found, seven bad ski days, zero score
+
 **Activity Recommendation**:
 A ranked assessment of Forecast Days for one activity at one Location. It ranks the Forecast Days present in the Forecast and does not invent missing Forecast Days.
 _Avoid_: itinerary, trip plan, weather lookup
