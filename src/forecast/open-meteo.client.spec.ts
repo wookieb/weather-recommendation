@@ -67,6 +67,54 @@ describe('OpenMeteoClient.getForecast', () => {
   });
 });
 
+describe('OpenMeteoClient.getSurfConditions', () => {
+  it('requests local 7-day Open-Meteo daily marine data from sea grid cells', async () => {
+    const requestOptions: Array<{ path?: string; method?: string }> = [];
+    const forecastClient = fakeClient({
+      request() {
+        throw new Error('Forecast client should not receive marine requests');
+      },
+    });
+    const marineClient = fakeClient({
+      request(options: Dispatcher.RequestOptions) {
+        requestOptions.push({ path: options.path, method: options.method });
+        return responseWithStatus(200, { daily: { time: [] } });
+      },
+    });
+    const openMeteoClient = new OpenMeteoClient(forecastClient, marineClient);
+
+    await openMeteoClient.getSurfConditions(london);
+
+    expect(requestOptions).toHaveLength(1);
+    expect(requestOptions[0]?.method).toBe('GET');
+    const path = new URL(
+      `https://api.open-meteo.com${requestOptions[0]?.path}`,
+    );
+    expect(path.pathname).toBe('/v1/marine');
+    expect(path.searchParams.get('latitude')).toBe('51.50853');
+    expect(path.searchParams.get('longitude')).toBe('-0.12574');
+    expect(path.searchParams.get('forecast_days')).toBe('7');
+    expect(path.searchParams.get('timezone')).toBe('auto');
+    expect(path.searchParams.get('cell_selection')).toBe('sea');
+    expect(path.searchParams.get('length_unit')).toBe('metric');
+    expect(path.searchParams.get('daily')).toBe(
+      'wave_height_max,wave_period_max,wave_direction_dominant,swell_wave_height_max,swell_wave_period_max,swell_wave_direction_dominant,wind_wave_height_max',
+    );
+  });
+
+  it('throws for marine HTTP errors', async () => {
+    const openMeteoClient = new OpenMeteoClient(
+      fakeClient({
+        request: () => responseWithStatus(500, { daily: { time: [] } }),
+      }),
+    );
+
+    await expect(openMeteoClient.getSurfConditions(london)).rejects.toThrow(
+      'Open-Meteo request failed with 500',
+    );
+  });
+});
+
 function responseWithStatus(statusCode: number, body: unknown) {
   return Promise.resolve({
     statusCode,
