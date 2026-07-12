@@ -69,16 +69,16 @@ The outcome when a Recommendation Score cannot be produced because required acti
 _Avoid_: zero score, bad recommendation
 
 **Surfing Recommendation**:
-A ranked assessment of upcoming days for a recreational intermediate surfer at one supported Location, where marine conditions define core suitability and weather conditions may affect comfort or safety. It is not a ranking of beach weather alone.
+A scored assessment of upcoming days for a recreational intermediate surfer at one supported Location, where Surf Conditions define core suitability and weather conditions may affect comfort or safety. It is not a ranking of beach weather alone.
 _Avoid_: surfing weather proxy, beach weather ranking
 
-**Surf Window**:
-The best surfable period within one Location-local Forecast Day. A Surfing Recommendation for a day represents this window rather than an average across the whole day.
-_Avoid_: daily average, midday sample
+**Surfing Day Score**:
+A Recommendation Score for surfing on one Forecast Day. It is scoring data rather than a ranked Activity Recommendation.
+_Avoid_: surf rank, surf reason, surf recommendation row
 
 **Surfing Unavailable**:
-The outcome when a Surfing Recommendation cannot be produced for a known Location because credible marine or surf data is unavailable. It is different from a day with poor surfing conditions.
-_Avoid_: Location Not Found, seven bad surf days
+The outcome when a Surfing Recommendation cannot be produced for a known Location because Forecast or Surf Conditions are unavailable as a whole. It is different from a day with poor surfing conditions or a produced recommendation with no scored days.
+_Avoid_: Location Not Found, seven bad surf days, empty ranked result
 
 **Activity Recommendation**:
 A ranked assessment of Forecast Days for one activity at one Location. It ranks the Forecast Days present in the Forecast and does not invent missing Forecast Days.
