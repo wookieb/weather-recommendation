@@ -30,7 +30,9 @@ Each recommendation scoring document must include these sections:
 
 `Rules` explains all scoring rules as a Markdown list. Include inputs, ranking behavior, hard caps, tie-breaking, unavailable-data behavior, and anything excluded from scoring.
 
-`Examples` includes at least 3 concrete scoring examples. Format each example as:
+`Examples` includes at least 3 concrete scoring examples. Include examples for extreme achievable scores, such as `0` and `100`, whenever the scoring rules can produce them. If an extreme score cannot be achieved from available scoring rules, reject the documentation change and require scoring improvements before documenting it.
+
+Format each example as:
 
 ```md
 ### Example name
