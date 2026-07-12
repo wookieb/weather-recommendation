@@ -1,0 +1,10 @@
+services:
+  grafana-otel-lgtm:
+    image: grafana/otel-lgtm:0.28.0
+    volumes:
+      - ./database/grafana:/data:delegated
+    ports:
+      - 5020:3000
+      - 5021:4317
+      - 5022:4318
+      - 5023:3200
