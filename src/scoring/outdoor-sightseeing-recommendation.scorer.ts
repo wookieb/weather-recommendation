@@ -208,9 +208,7 @@ function isSevereWeatherCode(weatherCode: number | null): boolean {
     return false;
   }
 
-  return SEVERE_OUTDOOR_SIGHTSEEING_WEATHER_CODES.includes(
-    weatherCode as SevereOutdoorSightseeingWeatherCode,
-  );
+  return SEVERE_OUTDOOR_SIGHTSEEING_WEATHER_CODES.includes(weatherCode);
 }
 
 enum SevereOutdoorSightseeingWeatherCode {
