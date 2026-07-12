@@ -53,6 +53,12 @@ export const LOCATION_CATALOG: readonly Location[] = catalogSchema.parse([
     geocoordinate: { latitude: 48.85341, longitude: 2.3488 },
   },
   {
+    slug: 'biarritz-fr',
+    name: 'Biarritz',
+    country: { code: 'FR', name: 'France' },
+    geocoordinate: { latitude: 43.48055, longitude: -1.55684 },
+  },
+  {
     slug: 'berlin-de',
     name: 'Berlin',
     country: { code: 'DE', name: 'Germany' },
@@ -87,6 +93,12 @@ export const LOCATION_CATALOG: readonly Location[] = catalogSchema.parse([
     name: 'Zurich',
     country: { code: 'CH', name: 'Switzerland' },
     geocoordinate: { latitude: 47.36667, longitude: 8.55 },
+  },
+  {
+    slug: 'zermatt-ch',
+    name: 'Zermatt',
+    country: { code: 'CH', name: 'Switzerland' },
+    geocoordinate: { latitude: 46.01998, longitude: 7.74863 },
   },
   {
     slug: 'tokyo-jp',
