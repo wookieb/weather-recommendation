@@ -1,79 +1,45 @@
 import { z } from 'zod';
 import { normalizeLookup } from './location.normalize';
-import type { Location } from './location.types';
+import { LocationSchema, type Location } from './location.types';
 
-const locationSchema = z
-  .object({
-    slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*-[a-z]{2}$/),
-    name: z.string().min(1),
-    country: z
-      .object({
-        code: z.string().regex(/^[A-Z]{2}$/),
-        name: z.string().min(1),
-      })
-      .strict(),
-    geocoordinate: z
-      .object({
-        latitude: z.number().min(-90).max(90),
-        longitude: z.number().min(-180).max(180),
-      })
-      .strict(),
-  })
-  .strict();
+const catalogSchema = z.array(LocationSchema).superRefine((locations, ctx) => {
+  const slugs = new Set<string>();
+  const lookupKeys = new Set<string>();
 
-const catalogSchema = z
-  .array(locationSchema)
-  .length(20)
-  .superRefine((locations, ctx) => {
-    const slugs = new Set<string>();
-    const lookupKeys = new Set<string>();
+  locations.forEach((location, index) => {
+    if (slugs.has(location.slug)) {
+      ctx.addIssue({
+        code: 'custom',
+        message: `Duplicate location slug: ${location.slug}`,
+        path: [index, 'slug'],
+      });
+    }
 
-    locations.forEach((location, index) => {
-      if (slugs.has(location.slug)) {
-        ctx.addIssue({
-          code: 'custom',
-          message: `Duplicate location slug: ${location.slug}`,
-          path: [index, 'slug'],
-        });
-      }
+    slugs.add(location.slug);
 
-      slugs.add(location.slug);
-
-      const nameLookup = normalizeLookup(location.name);
-      const locationLookupKeys = [
-        `${nameLookup}:${normalizeLookup(location.country.code)}`,
-        `${nameLookup}:${normalizeLookup(location.country.name)}`,
-      ];
-      const duplicateLookupKey = locationLookupKeys.find((lookupKey) =>
-        lookupKeys.has(lookupKey),
-      );
-
-      if (duplicateLookupKey) {
-        ctx.addIssue({
-          code: 'custom',
-          message: `Duplicate location lookup: ${location.name}, ${location.country.code}`,
-          path: [index],
-        });
-      }
-
-      locationLookupKeys.forEach((lookupKey) => lookupKeys.add(lookupKey));
-    });
-  });
-
-function validateCatalog(catalog: unknown): readonly Location[] {
-  const result = catalogSchema.safeParse(catalog);
-
-  if (!result.success) {
-    throw new Error(
-      `Invalid location catalog: ${z.prettifyError(result.error)}`,
+    const nameLookup = normalizeLookup(location.name);
+    const locationLookupKeys = [
+      `${nameLookup}:${normalizeLookup(location.country.code)}`,
+      `${nameLookup}:${normalizeLookup(location.country.name)}`,
+    ];
+    const duplicateLookupKey = locationLookupKeys.find((lookupKey) =>
+      lookupKeys.has(lookupKey),
     );
-  }
 
-  return result.data;
-}
+    if (duplicateLookupKey) {
+      ctx.addIssue({
+        code: 'custom',
+        message: `Duplicate location lookup: ${location.name}, ${location.country.code}`,
+        path: [index],
+      });
+    }
+
+    locationLookupKeys.forEach((lookupKey) => lookupKeys.add(lookupKey));
+  });
+});
 
 // Source: Open-Meteo Geocoding API v1 `/search`, queried once for each checked-in city.
-export const LOCATION_CATALOG = validateCatalog([
+export const LOCATION_CATALOG: readonly Location[] = catalogSchema.parse([
   {
     slug: 'london-gb',
     name: 'London',
