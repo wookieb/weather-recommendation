@@ -7,8 +7,9 @@ import { createRecommendationSchema } from './recommendation/recommendation.sche
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(
-    '/graphql',
+    '/',
     createYoga({
+      graphqlEndpoint: '/',
       schema: createRecommendationSchema(
         app.get(CombinedRecommendationService),
       ),
