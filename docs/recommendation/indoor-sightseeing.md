@@ -4,7 +4,7 @@
 
 Indoor Sightseeing Scoring scores how suitable each returned Forecast Day is for visiting indoor attractions at one
 Location. The Recommendation Score is an integer from 0 to 100 for indoor sightseeing only: 100 means best suitability,
-and 0 means unusable conditions.
+and 0 would mean unusable conditions if produced by the scoring rules.
 
 Indoor Sightseeing is a bad-weather refuge activity. Rain, cold, heat, low sunshine, moderate wind, or light snow can make
 indoor attractions more suitable than outdoor plans. Severe travel-disrupting weather can still cap or lower the score.
@@ -36,6 +36,9 @@ score. GraphQL recommendation composition can decide later how to present, order
   0 to the total.
 - Base score starts at 50. Weather adjustments are added, score is clamped to 0-100, then the lowest applicable hard cap is
   applied.
+- A score of 100 is achievable when multiple indoor-refuge signals are favorable and no hard cap applies.
+- Current scoring rules do not produce a score of 0. Severe conditions lower or cap the score, but no rule hard-caps the
+  score at 0.
 - Precipitation increases indoor suitability until its benefit cap: dry conditions with precipitation `< 1 mm` and
   probability `< 30%` add `0`; damp or possible rain with precipitation `1-5 mm` or probability `30-60%` adds `10`; wet
   conditions with precipitation `> 5-20 mm` or probability `> 60-85%` add `20`; very wet conditions with precipitation
@@ -58,6 +61,20 @@ score. GraphQL recommendation composition can decide later how to present, order
 - Recommendation Scores are not comparable across different activities.
 
 ## Examples
+
+### Ideal indoor refuge day
+
+Conditions:
+
+- Precipitation 30 mm and precipitation probability 90%.
+- Max temperature 8 C and min temperature -2 C.
+- Max wind 42 km/h and max gust 60 km/h.
+- Weather code is overcast.
+- Sunshine 1 hour.
+- Snowfall 8 cm.
+- Multiple indoor-refuge signals apply, and no hard cap applies.
+
+Score: 100
 
 ### Rainy museum day
 
