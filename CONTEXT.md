@@ -28,25 +28,25 @@ _Avoid_: GraphQL catalog, Open-Meteo search results
 Finding a Location by name and country. Lookup ignores text casing, accents, and outer whitespace; blank lookup terms are invalid rather than “not found”.
 _Avoid_: exact string match
 
+**Forecast**:
+Normalized weather for one known Location, grouped into Forecast Days and shaped for activity scoring. It is weather-only and excludes marine wave, swell, and surf conditions.
+_Avoid_: Open-Meteo response, weather blob
+
+**Forecast Day**:
+A Location-local calendar date within a Forecast. It carries normalized daily weather measurements such as temperature, precipitation, wind, snowfall, and sunshine duration.
+_Avoid_: provider row, UTC day
+
+**Forecast Lookup**:
+Requesting a Forecast for a known Location by using its geocoordinate with the weather provider and caching successful results by Location Slug.
+_Avoid_: location lookup, raw weather fetch
+
+**Forecast Unavailable**:
+The result when a known Location cannot produce usable provider weather data. It is distinct from Location Not Found and is not cached.
+_Avoid_: location missing, empty forecast
+
 **Location Not Found**:
 The outcome of a Location Lookup when no Location exists in the Location Catalog for the requested name and country.
 _Avoid_: unsupported city/town, invalid location
-
-**Forecast**:
-A weather prediction for one Location over a requested date range, represented as daily weather values used for activity recommendation. It may contain fewer Forecast Days than requested when the weather source supplies a shorter range, and it does not describe wave, swell, or surf conditions.
-_Avoid_: Open-Meteo response, weather lookup, marine forecast
-
-**Forecast Day**:
-One local calendar date within a Forecast, interpreted in the Location's timezone rather than UTC or server time.
-_Avoid_: UTC day, server day
-
-**Forecast Lookup**:
-Obtaining a Forecast for a Location. Forecast Lookup starts after Location Lookup and receives a Location rather than raw name and country text.
-_Avoid_: city weather lookup, location search
-
-**Forecast Unavailable**:
-The outcome when a Forecast cannot be produced for a known Location because weather data is unavailable or unusable.
-_Avoid_: Location Not Found, empty forecast
 
 **Surf Conditions**:
 Wave, swell, and near-coast wind signals for one Location over local calendar days, used to judge surfing suitability. Surf Conditions are separate from Forecast because Forecast describes land weather only.

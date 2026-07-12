@@ -1,5 +1,7 @@
 declare namespace Temporal {
-  interface PlainDate {}
+  interface PlainDate {
+    toString(): string;
+  }
 }
 
 declare const Temporal: {
