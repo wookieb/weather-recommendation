@@ -28,6 +28,8 @@ Lookup is unavailable, the result is Recommendation Unavailable rather than an e
 - Temperature comfort is a primary scoring factor. Best days have maximum temperature from 18 C to 26 C and minimum
   temperature not below 8 C. Cool days from 10 C to 17 C and warm days from 27 C to 30 C are borderline. Days colder
   than 10 C or hotter than 30 C score poorly, with extreme cold or heat treated as unusable.
+- A score of 100 is achievable when temperature, dryness, wind, snow, weather code, and sunshine are all ideal for
+  walking-heavy sightseeing.
 - Dryness is a primary scoring factor. Dry days with low precipitation probability score best. Light rain is tolerated
   when precipitation is up to about 2 mm/day and precipitation probability is no higher than 50%, provided temperature
   and wind remain comfortable. Steady rain, heavy rain, or high precipitation probability strongly lowers the score and
@@ -39,6 +41,8 @@ Lookup is unavailable, the result is Recommendation Unavailable rather than an e
 - Weather code classifies conditions for severe-weather caps. Thunderstorms, freezing precipitation, or other severe
   codes can cap the score as unusable. Clear or partly cloudy codes do not override poor rain, wind, snow, or
   temperature signals.
+- A score of 0 is achievable when severe weather, extreme wind, heavy precipitation, meaningful snowfall, or extreme
+  temperature makes walking-heavy sightseeing unusable.
 - Sunshine duration is a positive tie-breaker. Sunshine helps distinguish otherwise similar days, but a dry, mild,
   cloudy day should usually outrank a sunny day with rain, strong wind, snow, or uncomfortable temperature.
 - Ranking sorts Forecast Days by descending Recommendation Score. If scores tie, earlier Forecast Days rank first.
@@ -46,18 +50,18 @@ Lookup is unavailable, the result is Recommendation Unavailable rather than an e
 
 ## Examples
 
-### Good sightseeing day
+### Ideal sightseeing day
 
 Conditions:
 
 - Max temperature 22 C and min temperature 12 C.
-- Precipitation 0 mm and precipitation probability 10%.
-- Max wind 12 km/h and max gust 22 km/h.
+- Precipitation 0 mm and precipitation probability 0%.
+- Max wind 8 km/h and max gust 14 km/h.
 - Snowfall 0 cm.
-- Sunshine 8 hours with clear or partly cloudy weather code.
-- Mild, dry, calm, snow-free, and sunny conditions.
+- Sunshine 10 hours with clear weather code.
+- Mild, dry, calm, snow-free, sunny conditions all match the ideal sightseeing range.
 
-Score: 90
+Score: 100
 
 ### Borderline light-rain day
 
@@ -91,9 +95,10 @@ Conditions:
 
 - Max temperature 21 C and min temperature 14 C.
 - Precipitation 12 mm and precipitation probability 90%.
-- Max wind 35 km/h and max gust 65 km/h.
-- Snowfall 0 cm.
+- Max wind 55 km/h and max gust 80 km/h.
+- Snowfall 12 cm.
 - Sunshine 1 hour with thunderstorm weather code.
-- Heavy rain, high rain probability, thunderstorm conditions, and strong gusts trigger hard caps.
+- Heavy rain, high rain probability, thunderstorm conditions, strong gusts, and snow make walking-heavy sightseeing
+  unusable.
 
-Score: 10
+Score: 0

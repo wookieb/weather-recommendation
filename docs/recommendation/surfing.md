@@ -30,6 +30,8 @@ score. GraphQL recommendation composition can decide later how to present, order
   precipitation, wind speed, wind gust, temperature, snowfall, and sunshine.
 - Wave height and wave period drive baseline surf suitability. Moderate surf with organized period scores highest for the
   assumed recreational intermediate surfer.
+- A score of 100 is achievable when the best surfable window has moderate, organized surf, non-extreme tide, and no
+  weather safety or comfort penalty.
 - Flat or near-flat surf scores poorly because there is little surf opportunity.
 - Excessively large surf scores poorly or can be capped as unusable because it exceeds the recreational intermediate
   suitability boundary.
@@ -42,6 +44,7 @@ score. GraphQL recommendation composition can decide later how to present, order
   preserve a strong surf score. Rain, snow, uncomfortable temperature, or low sunshine can reduce it.
 - Severe weather codes, thunderstorms, freezing precipitation, heavy precipitation, meaningful snowfall, extreme wind,
   severe gusts, extreme tide, or extreme surf can cap or veto the score regardless of favorable wave conditions.
+- A score of 0 is achievable when a safety veto makes surfing unusable.
 - A day missing required Surf Conditions is omitted rather than scored as 0.
 - A day missing the required Forecast data is omitted rather than scored as 0.
 - If no days can be scored for a known Location, Surfing Day Scoring is unavailable rather than an empty set of bad
@@ -51,18 +54,18 @@ score. GraphQL recommendation composition can decide later how to present, order
 
 ## Examples
 
-### Clean moderate surf
+### Ideal clean surf
 
 Conditions:
 
-- Wave height 1.5 m.
-- Wave period 11 s.
+- Wave height 1.4 m.
+- Wave period 12 s.
 - Swell and wind directions are available but not used for exposure scoring.
 - Tide is not extreme.
 - Mild temperature, no precipitation, no snowfall, light wind, and low gusts.
-- Surf is organized and within the recreational intermediate range.
+- Surf is organized and centered in the recreational intermediate range.
 
-Score: 88
+Score: 100
 
 ### Borderline small surf
 
@@ -99,9 +102,9 @@ Conditions:
 - Swell and wind directions are available but not used for exposure scoring.
 - Tide is extreme.
 - Thunderstorm weather code, heavy precipitation, strong wind, and severe gusts.
-- Surf energy is present, but safety conditions cap the day as unusable.
+- Surf energy is present, but safety conditions veto the day as unusable.
 
-Score: 5
+Score: 0
 
 ### Surf data unavailable
 
