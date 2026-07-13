@@ -19,12 +19,16 @@ export type RecommendationDay = {
   indoorSightseeing: RecommendationScore | null;
 };
 
+export type RecommendationAverage = {
+  skiing: RecommendationScore | null;
+  surfing: RecommendationScore | null;
+  outdoorSightseeing: RecommendationScore | null;
+  indoorSightseeing: RecommendationScore | null;
+};
+
 export type CombinedRecommendation = {
   location: Location;
-  skiingAverage: RecommendationScore | null;
-  surfingAverage: RecommendationScore | null;
-  outdoorSightseeingAverage: RecommendationScore | null;
-  indoorSightseeingAverage: RecommendationScore | null;
+  average: RecommendationAverage;
   days: RecommendationDay[];
 };
 
@@ -46,10 +50,12 @@ export class CombinedRecommendationService {
 
     return just({
       location: location.value,
-      skiingAverage: maybeScore(averages.get('skiing')),
-      surfingAverage: maybeScore(averages.get('surfing')),
-      outdoorSightseeingAverage: maybeScore(averages.get('outdoorSightseeing')),
-      indoorSightseeingAverage: maybeScore(averages.get('indoorSightseeing')),
+      average: {
+        skiing: maybeScore(averages.get('skiing')),
+        surfing: maybeScore(averages.get('surfing')),
+        outdoorSightseeing: maybeScore(averages.get('outdoorSightseeing')),
+        indoorSightseeing: maybeScore(averages.get('indoorSightseeing')),
+      },
       days: perDay
         .toArray()
         .map(([date, scores]) => ({

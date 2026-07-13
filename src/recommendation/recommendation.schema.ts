@@ -3,6 +3,7 @@ import { GraphQLLocalDate } from 'graphql-scalars';
 import {
   type CombinedRecommendation,
   CombinedRecommendationService,
+  type RecommendationAverage,
   type RecommendationDay,
 } from './combined-recommendation.service';
 import {
@@ -23,6 +24,7 @@ type SchemaTypes = {
     Country: Country;
     Geocoordinate: Geocoordinate;
     Location: Location;
+    RecommendationAverage: RecommendationAverage;
     RecommendationDay: RecommendationDay;
   };
 };
@@ -70,17 +72,19 @@ export function createRecommendationSchema(
     }),
   });
 
+  builder.objectType('RecommendationAverage', {
+    fields: (t) => ({
+      skiing: t.exposeInt('skiing', { nullable: true }),
+      surfing: t.exposeInt('surfing', { nullable: true }),
+      outdoorSightseeing: t.exposeInt('outdoorSightseeing', { nullable: true }),
+      indoorSightseeing: t.exposeInt('indoorSightseeing', { nullable: true }),
+    }),
+  });
+
   builder.objectType('CombinedRecommendation', {
     fields: (t) => ({
       location: t.expose('location', { type: 'Location' }),
-      skiingAverage: t.exposeInt('skiingAverage', { nullable: true }),
-      surfingAverage: t.exposeInt('surfingAverage', { nullable: true }),
-      outdoorSightseeingAverage: t.exposeInt('outdoorSightseeingAverage', {
-        nullable: true,
-      }),
-      indoorSightseeingAverage: t.exposeInt('indoorSightseeingAverage', {
-        nullable: true,
-      }),
+      average: t.expose('average', { type: 'RecommendationAverage' }),
       days: t.expose('days', { type: ['RecommendationDay'] }),
     }),
   });
