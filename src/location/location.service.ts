@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { type Maybe, just, none } from '@sweet-monads/maybe';
+import { Span } from 'nestjs-otel';
 import { LOCATION_CATALOG } from './location.catalog';
 import { normalizeLookup } from './location.normalize';
 import {
@@ -10,6 +11,7 @@ import {
 
 @Injectable()
 export class LocationService {
+  @Span('location.find')
   find(query: LocationQueryInput): Maybe<Location> {
     const { name, country } = LocationQuerySchema.parse(query);
 

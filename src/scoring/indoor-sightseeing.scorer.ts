@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { type Maybe, just, none } from '@sweet-monads/maybe';
+import { Span } from 'nestjs-otel';
 import { ForecastHelper } from '../forecast/forecast.helper';
 import { type ForecastDay } from '../forecast/forecast.types';
 import { type Location } from '../location/location.types';
@@ -12,6 +13,7 @@ export class IndoorSightseeingScorer implements Scorer<'indoorSightseeing'> {
 
   constructor(private readonly forecastHelper: ForecastHelper) {}
 
+  @Span('scoring.indoor_sightseeing.score')
   async score(
     location: Location,
   ): Promise<Awaited<ReturnType<Scorer<'indoorSightseeing'>['score']>>> {

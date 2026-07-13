@@ -1,4 +1,5 @@
 import { Client, type Dispatcher } from 'undici';
+import { Span } from 'nestjs-otel';
 import { z } from 'zod';
 import { type Location } from '../location/location.types';
 
@@ -124,6 +125,7 @@ export class OpenMeteoClient {
     private readonly marineClient: Client = forecastClient,
   ) {}
 
+  @Span('open_meteo.forecast.get')
   async getForecast(location: Location): Promise<OpenMeteoForecastResponse> {
     try {
       const response = await this.forecastClient.request(
@@ -147,6 +149,7 @@ export class OpenMeteoClient {
     }
   }
 
+  @Span('open_meteo.surf_conditions.get')
   async getSurfConditions(
     location: Location,
   ): Promise<OpenMeteoSurfConditionsResponse> {

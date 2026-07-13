@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { type Maybe, just, none } from '@sweet-monads/maybe';
 import { CacheableMemory } from 'cacheable';
+import { Span } from 'nestjs-otel';
 import { z } from 'zod';
 import { type Location } from '../location/location.types';
 import {
@@ -95,6 +96,7 @@ export class SurfConditionsHelper {
     private readonly cache: CacheableMemory,
   ) {}
 
+  @Span('surf_conditions.get')
   async get(location: Location): Promise<Maybe<SurfConditions>> {
     const getSurfConditions = this.cache.wrap(
       async () => {

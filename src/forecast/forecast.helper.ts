@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { type Maybe, just, none } from '@sweet-monads/maybe';
 import { CacheableMemory } from 'cacheable';
+import { Span } from 'nestjs-otel';
 import { z } from 'zod';
 import { type Location } from '../location/location.types';
 import { OpenMeteoClient, OpenMeteoRequestError } from './open-meteo.client';
@@ -104,6 +105,7 @@ export class ForecastHelper {
     private readonly cache: CacheableMemory,
   ) {}
 
+  @Span('forecast.get')
   async get(location: Location): Promise<Maybe<Forecast>> {
     const getForecast = this.cache.wrap(
       async () => {

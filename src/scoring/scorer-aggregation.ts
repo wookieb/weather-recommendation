@@ -1,5 +1,6 @@
 import { type HashMap } from '@rimbu/hashed';
 import { just, none, type Maybe } from '@sweet-monads/maybe';
+import { Span } from 'nestjs-otel';
 import { type Location } from '../location/location.types';
 import { PlainDateHashMapContext } from './plain-date-hash-map-context';
 import { type RecommendationScore, type Scorer } from './scorer';
@@ -7,6 +8,7 @@ import { type RecommendationScore, type Scorer } from './scorer';
 export class ScorerAggregation<T extends string> {
   constructor(private readonly scorerList: Set<Scorer<T>>) {}
 
+  @Span('scoring.aggregate')
   async score(
     location: Location,
   ): Promise<HashMap<Temporal.PlainDate, Map<T, Maybe<RecommendationScore>>>> {
@@ -33,6 +35,7 @@ export class ScorerAggregation<T extends string> {
     return result;
   }
 
+  @Span('scoring.compute_averages')
   computeAverages(
     perDay: HashMap<Temporal.PlainDate, Map<T, Maybe<RecommendationScore>>>,
   ): Map<T, Maybe<RecommendationScore>> {

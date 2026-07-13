@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { type HashMap } from '@rimbu/hashed';
 import { just, type Maybe } from '@sweet-monads/maybe';
+import { Span } from 'nestjs-otel';
 import { ForecastHelper } from '../forecast/forecast.helper';
 import { type ForecastDay } from '../forecast/forecast.types';
 import { type Location } from '../location/location.types';
@@ -18,6 +19,7 @@ export class SurfingScorer implements Scorer<'surfing'> {
     private readonly surfConditionsHelper: SurfConditionsHelper,
   ) {}
 
+  @Span('scoring.surfing.score')
   async score(
     location: Location,
   ): Promise<HashMap<Temporal.PlainDate, Maybe<RecommendationScore>>> {

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { just, none, type Maybe } from '@sweet-monads/maybe';
+import { Span } from 'nestjs-otel';
 import {
   type Location,
   type LocationQueryInput,
@@ -39,6 +40,7 @@ export class CombinedRecommendationService {
     private readonly scorerAggregation: ScorerAggregation<Activity>,
   ) {}
 
+  @Span('recommendation.combined.get')
   async get(query: LocationQueryInput): Promise<Maybe<CombinedRecommendation>> {
     const location = this.locationService.find(query);
     if (location.isNone()) {
